@@ -1,0 +1,424 @@
+@import "tailwindcss";
+
+/* Nakuru Walk: morning mist over the lake for the ground, white for things you
+   read, the club's green jersey for actions, and Lake Nakuru flamingo pink only
+   for what needs your attention (counts, likes, market day). */
+:root {
+  --ground: #f1f4f2;
+  --surface: #ffffff;
+  --surface-2: #e8eeea;
+  --border: #dde4df;
+  --control: #b9c6bd;
+  --text: #0f1e17;
+  --muted: #4f5e56;
+  --faint: #67756c;
+  --accent: #157347;
+  --accent-deep: #0d4f30;
+  --accent-soft: #dceee3;
+  --bloom: #d9466f;
+  --bloom-deep: #a92a50;
+  --bloom-soft: #fbe4ea;
+  --negative: #b42318;
+  --whatsapp: #128c4a;
+  --hairline: 0 0 0 1px rgb(15 30 23 / 0.08);
+  --shadow-lift: 0 1px 2px rgb(15 30 23 / 0.06), 0 16px 36px -18px rgb(15 30 23 / 0.32);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-control: var(--control);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-soft: var(--accent-soft);
+  --color-bloom: var(--bloom);
+  --color-bloom-deep: var(--bloom-deep);
+  --color-bloom-soft: var(--bloom-soft);
+  --color-negative: var(--negative);
+  --color-whatsapp: var(--whatsapp);
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --radius-card: 20px;
+  --shadow-card: var(--hairline);
+  --shadow-lift: var(--shadow-lift);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--control) transparent;
+  scrollbar-width: thin;
+}
+
+body {
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  caret-color: var(--accent);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+@layer components {
+  /* Titles and big numbers: the same family, condensed and heavy, like a trail sign. */
+  .display {
+    font-stretch: 72%;
+    font-weight: 750;
+    letter-spacing: -0.012em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /* Buttons. Every look sets the same four colours, so pressing, hovering and
+     disabling behave the same everywhere and one look can't leak into another.
+     Sizes: .btn is 52px, .btn-sm 40px. Round icon buttons are <IconButton>. */
+  .btn {
+    --btn-bg: var(--accent);
+    --btn-fg: #ffffff;
+    --btn-hover: #12663f;
+    --btn-press: var(--accent-deep);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background-color: var(--btn-bg);
+    color: var(--btn-fg);
+    font-weight: 600;
+    font-size: 16px;
+    transition: transform 160ms var(--ease-out), background-color 160ms ease, opacity 160ms ease;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:not(:disabled, [aria-disabled="true"]):hover {
+      background-color: var(--btn-hover);
+    }
+  }
+  .btn:not(:disabled, [aria-disabled="true"]):active {
+    transform: scale(0.97);
+    background-color: var(--btn-press);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: default;
+  }
+  /* Grey: the everyday second choice. */
+  .btn-quiet {
+    --btn-bg: var(--surface-2);
+    --btn-fg: var(--text);
+    --btn-hover: #dfe7e2;
+    --btn-press: var(--border);
+  }
+  /* White with a hairline: sign-in with another company (Google), on the misty ground. */
+  .btn-white {
+    --btn-bg: var(--surface);
+    --btn-fg: var(--text);
+    --btn-hover: #f7f9f8;
+    --btn-press: var(--surface-2);
+    box-shadow: var(--hairline), 0 1px 2px rgb(15 30 23 / 0.05);
+  }
+  /* Soft green: something you've already done, such as "You're coming". */
+  .btn-done {
+    --btn-bg: var(--accent-soft);
+    --btn-fg: var(--accent-deep);
+    --btn-hover: #d1e8da;
+    --btn-press: #c6e2d0;
+  }
+  /* Solid red: the final step of something that can't be undone. */
+  .btn-danger {
+    --btn-bg: var(--negative);
+    --btn-fg: #ffffff;
+    --btn-hover: #a11f15;
+    --btn-press: #8f1c13;
+  }
+  /* Grey with red words: the way in to something destructive, before the final step. */
+  .btn-danger-quiet {
+    --btn-bg: var(--surface-2);
+    --btn-fg: var(--negative);
+    --btn-hover: #f5e1df;
+    --btn-press: #efd2cf;
+  }
+  .btn-whatsapp {
+    --btn-bg: var(--whatsapp);
+    --btn-hover: #107d42;
+    --btn-press: #0c6635;
+  }
+  .btn-sm {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  /* Round 44px icon buttons, used through <IconButton>. Raised floats on the ground
+     (screen headers); plain sits inside a bar or a card. */
+  .icon-btn {
+    --ib-bg: transparent;
+    --ib-fg: var(--muted);
+    --ib-hover: var(--surface-2);
+    --ib-press: var(--border);
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background-color: var(--ib-bg);
+    color: var(--ib-fg);
+    transition: transform 160ms var(--ease-out), background-color 160ms ease, color 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+  .icon-btn-raised {
+    --ib-bg: var(--surface);
+    --ib-fg: var(--text);
+    --ib-hover: #f7f9f8;
+    --ib-press: var(--surface-2);
+    box-shadow: var(--hairline), 0 1px 2px rgb(15 30 23 / 0.06), 0 6px 16px -10px rgb(15 30 23 / 0.3);
+  }
+  .icon-btn-danger {
+    --ib-fg: var(--faint);
+    --ib-hover: #f5e1df;
+    --ib-press: #efd2cf;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .icon-btn:not(:disabled):hover {
+      background-color: var(--ib-hover);
+    }
+    .icon-btn-danger:not(:disabled):hover {
+      color: var(--negative);
+    }
+  }
+  .icon-btn:not(:disabled):active {
+    transform: scale(0.94);
+    background-color: var(--ib-press);
+  }
+  .icon-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  /* Lets a small control (an x, a Reply link) take a finger-sized tap of at least 44px without looking bigger. */
+  .hit,
+  .btn-sm {
+    position: relative;
+  }
+  .hit::after,
+  .btn-sm::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  .field {
+    display: block;
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 16px; /* 16px stops iPhones zooming on focus */
+    color: var(--text);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  textarea.field {
+    height: auto;
+    padding: 14px 16px;
+    resize: none;
+  }
+  select.field {
+    appearance: none;
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234f5e56' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+  select.field:disabled {
+    opacity: 0.55;
+  }
+  .field::placeholder {
+    color: var(--faint);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgb(21 115 71 / 0.14);
+  }
+
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--hairline);
+  }
+
+  /* The next walk: the jersey green, deepened, with the land's contour lines faintly behind. */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    color: #ffffff;
+    background: #0e4a2e;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.14;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='260' viewBox='0 0 420 260' fill='none' stroke='white' stroke-width='1.2'%3E%3Cpath d='M-20 210C60 170 120 215 200 190S330 120 440 150'/%3E%3Cpath d='M-20 180C50 140 130 185 205 158S320 92 440 118'/%3E%3Cpath d='M-20 150C40 112 135 152 208 126S315 66 440 88'/%3E%3Cpath d='M-20 120C35 86 138 120 210 96S312 42 440 58'/%3E%3Cpath d='M-20 90C30 60 140 88 212 66S310 18 440 30'/%3E%3Cpath d='M-20 240C70 200 115 245 195 222S335 150 440 182'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .press {
+    transition: transform 160ms var(--ease-out);
+  }
+  .press:not(:disabled, [aria-disabled="true"]):active {
+    transform: scale(0.98);
+  }
+
+  /* A row of things you swipe sideways (photos, categories), without a scrollbar. */
+  .swipe {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .swipe::-webkit-scrollbar {
+    display: none;
+  }
+  .swipe > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 320ms var(--ease-out) both;
+}
+
+/* The route draws itself once, left to right, when the screen opens: the one moment of motion.
+   A clip that opens, rather than a stroke dash, so it ends fully drawn in every browser. */
+@keyframes reveal {
+  from { clip-path: inset(-6px 100% -6px 0); }
+  to { clip-path: inset(-6px 0 -6px 0); }
+}
+.route-reveal {
+  clip-path: inset(-6px 0 -6px 0);
+  animation: reveal 1100ms var(--ease-out) 150ms both;
+}
+@keyframes stop-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: none; }
+}
+.route-stop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: stop-in 380ms var(--ease-out) both;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+.pop {
+  animation: pop 320ms var(--ease-out);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.loading-bar {
+  animation: pulse-soft 1.4s ease-in-out infinite;
+}
+
+/* A centred card over the screen, for choices that need a moment's thought. */
+dialog.sheet {
+  margin: auto;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  border: 0;
+  border-radius: 28px;
+  padding: 24px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 60px rgb(15 30 23 / 0.22);
+}
+dialog.sheet::backdrop {
+  background: rgb(15 30 23 / 0.45);
+  backdrop-filter: blur(2px);
+}
